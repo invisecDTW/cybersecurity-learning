@@ -1,20 +1,14 @@
-# SQL Injection Lab – PortSwigger Academy (Learning Reflection)
-
-## Platform
+SQL Injection Lab – PortSwigger Academy (Learning Reflection)
+Platform
 PortSwigger Web Security Academy  
 https://portswigger.net/web-security
-
-## Lab Reference
+ Lab Reference
 https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fportswigger.net%2Fweb-security%2Fsql-injection%2Flab-retrieve-hidden-data&urlhash=wbOg&mt=6xDIunZgKn8Y-ZZKydsqqusUFoN64N55pvFds9rp7KK2_EDDdB4NQmFkKmcIX9hBEXOsBJEyi09oGVXE6Px3zHuY9o_TfIXZSDGAGHnwINh9SmM9EYgpjFyoSMU&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3B54I%2BaD95QQW%2FxeBI2sBoDw%3D%3D
----
 
-## Overview
+Overview
 I recently completed another SQL Injection lab on PortSwigger Web Security Academy.
-
 What I found interesting is that the challenge was not in understanding the concept itself, but in correctly constructing the payload and making it work in practice.
 
----
-
-## Payload Used
+Payload Used
 ```sql
 ' OR 1=1--
