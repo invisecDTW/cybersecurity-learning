@@ -1,0 +1,77 @@
+# SQL Injection UNION Attack – Finding a Column Containing Text
+
+## Platform
+PortSwigger Web Security Academy  
+https://portswigger.net/web-security
+lab referenchttps://www.linkedin.com/safety/go/?url=https%3A%2F%2Fportswigger.net%2Fweb-security%2Fsql-injection%2Funion-attacks%2Flab-find-column-containing-text&urlhash=q736&mt=7I7cGUB6pDIa7tfKs_Wq7yyEGm8U5GgRwGTGkU4b-XQghvhpuod49400eV6shkjPD4OlUTs6fq9m9_rQIa1cYSdug06dX7JXmj8-5-UKTFylfhiBGY-hxSJgQpQ&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BKRYrI3%2BjRqCGWB4%2F%2FjUc1Q%3D%3De: 
+## Lab Context
+SQL Injection – UNION Attack: Finding a Column Containing Text
+
+ Overview
+
+In this lab, I explored how UNION-based SQL injection can be used to identify which database columns are capable of storing text data.
+
+Understanding data types is an important step in UNION attacks because the injected query must be compatible with the structure of the original query. Once a text-compatible column is identified, it can potentially be used to display useful information retrieved from the database.
+
+Objectives
+
+The main goal of this lab was to:
+
+- Determine the number of columns returned by the original query
+- Identify which columns accept text data
+- Use a UNION SELECT statement successfully
+- Understand how attackers leverage compatible columns to retrieve information
+
+Skills Practiced
+
+Determining Column Count
+
+Before a UNION attack can succeed, the injected query must return the same number of columns as the original query.
+
+This involved testing different query structures until the correct column count was identified.
+
+ Testing Data Types
+
+After identifying the number of columns, I tested individual columns to determine which ones were compatible with text values.
+
+This is a critical step because attempting to place text data into an incompatible column may result in errors or failed queries.
+
+Using UNION SELECT
+
+Once a text-compatible column was found, I used a UNION SELECT statement to retrieve and display data through the application's response.
+
+Key Learning
+
+One of the most important lessons from this lab was understanding that successful UNION-based SQL injection depends on more than finding a vulnerable parameter.
+
+The attacker must also understand:
+
+- The structure of the original query
+- The number of columns returned
+- The data types expected in each column
+
+Without satisfying these requirements, the database will reject the injected query.
+
+Security Insight
+
+This lab demonstrates why secure database practices are essential.
+
+Improper input validation and insecure query construction can allow attackers to:
+
+- Manipulate SQL queries
+- Discover database structure
+- Retrieve unauthorized information
+- Expose sensitive application data
+
+Defensive measures such as parameterized queries and prepared statements help prevent these attacks.
+
+Reflection
+This exercise strengthened my understanding of the logic behind SQL injection rather than simply the payloads themselves.
+It showed how attackers systematically analyze query structure, data types, and application responses to move from identifying a vulnerability to successfully extracting information.
+Each PortSwigger lab continues to deepen my understanding of how web applications interact with databases and how small weaknesses can lead to significant security risks.
+
+---
+
+## Tags
+
+#CyberSecurity #SQLInjection #UNIONAttack #WebSecurity #PortSwigger #EthicalHacking #PenetrationTesting #OWASP
