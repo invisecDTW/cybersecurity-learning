@@ -1,84 +1,46 @@
-# SQL Injection UNION Attack – Understanding When UNION Injection Is Possible
-
-## Platform
-PortSwigger Web Security Academy  
+SQL Injection UNION Attack – Understanding When UNION Injection Is Possibl
+Platform: PortSwigger Web Security Academy  
 https://portswigger.net/web-security
-
-## Lab Context
+Lab Context
 SQL Injection – UNION-based attack scenarios
 lab reference https://www.linkedin.com/safety/go/?url=https%3A%2F%2Fportswigger.net%2Fweb-security%2Fsql-injection%2Funion-attacks%2Flab-determine-number-of-columns&urlhash=BgQk&mt=McPTowpjCMsEDyyA8F4G_HzDtBytXC8UYWC5QBg6T16P4QmAWGq9-rPx6wfAvDTEIBKITHN-96fAF0aBLsse_8m0VNTO97hUC8sVL-VpnQig_g5Ij2b1UUr8Wac&isSdui=true&lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BwC%2BUXboZRAuqHyx8xWQ4%2Bg%3D%3D
----
 
-## Overview
+ Overview
 After completing a PortSwigger SQL Injection lab on UNION attacks, my biggest discovery was not just the exploitation technique itself, but understanding the conditions under which UNION-based SQL injection is actually possible.
 
----
-
-## Key Learning
-
+ Key Learning
 I learned that SQL injection does not automatically mean UNION injection will work.
-
 UNION-based injection only becomes possible under specific conditions, especially when:
-
 - The application returns database query results in its HTTP response
 - The output of the query is visible to the user
-
 Without visible output, the vulnerability may still exist, but it would typically fall into blind SQL injection scenarios rather than UNION-based exploitation.
 
----
-
-## Important Insight
-
+Important Insight
 What changed my understanding most was realizing that:
-
-> UNION injection is not about forcing new behavior into the database, but about working within SQL’s structural rules.
+UNION injection is not about forcing new behavior into the database, but about working within SQL’s structural rules.
 
 SQL enforces strict requirements when combining queries, such as:
-
 - Matching number of columns
 - Compatible data types between columns
-
 These rules exist for query consistency, not security.
 
 The vulnerability arises when:
-
 - Application output reflects database results
 - User input influences structured SQL query results
 
----
-
-## How Discovery Works in Practice
-
+How Discovery Works in Practice
 Discovery is not guessing. It is a structured process of observation.
-
 It involves:
-
 - Testing how the application responds to input
 - Checking whether query results are displayed
 - Identifying whether errors or output differences reveal structure
 - Gradually inferring database behavior step by step
 
----
-
-## Reflection
 
 This lab helped me shift my mindset from thinking in terms of “attacks” to understanding system behavior.
-
 Instead of focusing only on exploitation techniques, I now better understand:
-
 - How application logic interacts with SQL databases
 - How structured query behavior affects vulnerability exploitation
 - How output rendering determines what type of SQL injection is possible
 
----
-
-## Conclusion
-
-I am still learning, but this exercise helped me build a clearer mental model of how SQL injection works under the hood in real applications.
-
-Each lab continues to improve both my technical understanding and my analytical thinking in cybersecurity.
-
----
-
-## Tags
 #CyberSecurity #SQLInjection #UNIONAttack #WebSecurity #PortSwigger #EthicalHacking #PenetrationTesting #OWASP
