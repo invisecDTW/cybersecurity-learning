@@ -1,0 +1,50 @@
+I Didn't Steal the Admin Password.
+I Asked the Database to Tell Me Where It Was Hiding It.
+
+Today I completed PortSwigger's SQL Injection: Listing Database Contents on Non-Oracle Databases lab.
+What made this lab different wasn't the final login as administrator.
+It was the process.
+At the start, all I had was a product category filter.
+No user table.
+No password table.
+No credentials.
+Just a single input field.
+Then the investigation began.
+
+Questions I Had to Answer
+- How many columns does the query return?
+- Which columns can display text?
+- What tables exist in the database?
+- Which table stores user credentials?
+- Which columns contain usernames and passwords?
+
+Each answer unlocked the next question.
+One payload became several.
+One clue led to another.
+Eventually, I was able to enumerate the database structure, identify the credentials table, extract user records, and obtain the administrator password.
+
+The most valuable thing I gained wasn't the administrator password.
+It was learning how to think methodically when information isn't handed to me.
+Every table discovered.
+Every column identified.
+Every assumption tested.
+Every payload written for a reason.
+
+Skills Practiced
+- SQL Injection (UNION-based)
+- Column enumeration
+- Database enumeration
+- Information Schema reconnaissance
+- Credential extraction
+- Authentication compromise
+- Web application testing methodology
+
+Platform
+- PortSwigger Web Security Academy
+ Status
+✅ Lab Solved
+ Next Step
+
+Blind SQL Injection.
+
+#CyberSecurity #EthicalHacking #SQLInjection #PortSwigger #WebSecurity #InfoSec #PenetrationTesting #LearningInPublic
