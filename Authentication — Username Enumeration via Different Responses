@@ -1,0 +1,49 @@
+PortSwigger Lab: Authentication — Username Enumeration via Different Responses
+Lab link: https://portswigger.net/web-security/authentication/password-based/lab-username-enumeration-via-different-responses
+
+Summary
+A login function leaked valid usernames through inconsistent error messages and response lengths. By comparing server responses, I was able to confirm an existing user, reduce the attack surface, and then identify the correct password. This is a classic example of CWE-203: Information Exposure Through Discrepancy.
+Tested in: PortSwigger Web Security Academy (authorized lab environment only)
+
+Objective
+Understand how subtle differences in authentication feedback can be abused for user enumeration, and practice a methodology-driven approach instead of blind brute-force.
+Vulnerability Analysis
+Root Cause: The application returned two distinct responses:
+Invalid username → "Invalid username" (~1,950 bytes)
+Valid username + wrong password → "Incorrect password" (~1,973 bytes)
+OWASP Mapping: A07:2021 – Identification and Authentication Failures
+CWE: CWE-203 – Observable Discrepancy
+This is not a password flaw. It is an information disclosure in the error handling logic.
+
+Methodology
+I followed a compare-first approach:
+Baseline: Proxied a normal login to capture the standard failure.
+Hypothesis: If responses differ, the difference can be used as an oracle.
+Test: Sent a static wrong password to a candidate username list and recorded response length and body.
+Analyze: Sorted results to find the statistical outlier.
+Pivot: Locked onto the confirmed user and tested passwords only against that account.
+Validate: Looked for a behavioral change (HTTP 302 redirect vs 200) to confirm success.
+No automated scanner was used for exploitation — only manual comparison and a simple Python comparator.
+
+Tools Used
+Burp Suite Community (Proxy, Comparer)
+Python 3 + requests
+PortSwigger candidate wordlists
+
+Key Finding
+One username consistently returned a longer response containing "Incorrect password". This confirmed the account existed. Subsequent password testing against only that user resulted in a 302 redirect to /my-account, confirming valid credentials.
+Screenshots and exact credentials are intentionally omitted to avoid spoilers.
+
+Business Impact
+In a production system, this vulnerability allows an attacker to:
+Build a verified username list for phishing or credential stuffing
+Reduce brute-force complexity from users × passwords to passwords only
+Bypass generic lockout policies by targeting known accounts slowly
+
+Remediation
+For developers and AppSec teams:
+Use generic errors: Always return "Invalid username or password" for both cases.
+Normalize responses: Ensure identical HTTP status code, response body length, and response time.
+Implement controls: Rate limiting, IP-based throttling, and account lockout.
+Add MFA: Even with enumeration, a second factor blocks takeover.
+Monitor: Alert on high volumes of failed logins with username variance from a single source.
