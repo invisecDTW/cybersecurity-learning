@@ -1,0 +1,26 @@
+Authentication Vulnerabilities – Username Enumeration via Subtly Different Responses
+Lab: PortSwigger Web Security Academy
+Topic: Authentication
+Summary
+Yesterday's lab was a straightforward username enumeration case – the application returned clearly different responses for valid and invalid usernames.
+Today's lab was more realistic. At first glance, the developers appeared to have fixed the issue. The login page returned the same HTTP status code and displayed what looked like the same error message for every failed attempt.
+
+The Discovery
+Security often lives in the details.
+After inspecting the responses in Burp Suite, I noticed a subtle inconsistency. One specific username triggered a slightly different error message. The difference was not obvious – just a small formatting variation (an extra space) that could easily be overlooked during development.
+That tiny discrepancy was enough to confirm a valid account.
+Once the username was identified, I moved to password testing and completed the lab successfully.
+
+Key Lesson
+This challenge mirrors how security improvements work in the real world. The application had evolved from the previous vulnerability. The developers recognized the risk and attempted to standardize authentication responses.The problem was the fix wasn't fully implemented.
+Even when status codes and error messages appear identical, attackers can still find information disclosure through:
+
+Response length differences
+Timing variations
+Whitespace or formatting changes
+Minor differences in wording or punctuation
+
+Right now i learn that
+Security isn't just about fixing the obvious vulnerability. It's about eliminating every observable difference that could leak information.
+
+This lab reinforced that enumeration flaws often survive in the details, not in the obvious errors.
