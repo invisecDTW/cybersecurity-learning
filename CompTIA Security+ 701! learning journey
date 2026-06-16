@@ -1,0 +1,148 @@
+ CompTIA Security+ 701! learning journey
+
+SY0-701) Learning Journey
+Overview
+This repository documents my learning journey through the CompTIA Security+ (SY0-701) curriculum and serves as a consolidated reference for the security concepts, principles, and practices I studied.
+While cybersecurity is often associated with preventing attacks, one of the most important lessons from this course is that security is fundamentally about managing risk, protecting trust, ensuring resilience, and enabling business continuity.
+Throughout this learning experience, I explored how organizations defend their systems, data, networks, and users against an evolving threat landscape while maintaining operational reliability.
+
+Key Areas of Study
+Identity and Access Management (IAM)
+Identity remains the foundation of modern security.
+Topics explored include:
+-Authentication and authorization
+-Access control models
+-Role-Based Access Control (RBAC)
+-Attribute-Based Access Control (ABAC)
+-Principle of Least Privilege
+-Just-In-Time (JIT) access
+-Temporary privileged accounts
+-Privileged Access Management (PAM)
+-Multi-Factor Authentication (MFA)
+-Federation and Single Sign-On (SSO)
+
+Security Architecture and Network Security
+Modern security assumes that breaches may occur and focuses on limiting their impact.
+Topics explored include:
+-Network segmentation
+-Subnetting
+-Defense in Depth
+-Zero Trust concepts
+-Virtual Private Networks (VPNs)
+-Air-gapped systems
+-Isolation and containment strategies
+-Secure network design
+-Security zones and trust boundaries
+
+Threats, Vulnerabilities, and Attacks
+Understanding attacker techniques is essential for effective defense.
+Topics explored include:
+Malware
+-Viruses
+-Worms
+-Trojans
+-Logic bombs
+-Spyware
+-Keyloggers
+
+Physical attack vectors
+-Malicious USB devices
+-Card cloning
+-Skimming attacks
+
+Network attacks
+-DNS poisoning
+-ARP poisoning
+-on-path attacks
+-DDoS attacks
+-Amplification attacks
+
+Social engineering concepts
+-Phishing
+-Spear phishing
+-Human-focused attack vectors
+
+Security Operations and Incident Response
+Security is not only about prevention but also detection, response, recovery, and continuous improvement.
+Topics explored include:
+-Security monitoring
+-Incident response lifecycle
+-Security logging
+-Threat detection-Network diagnostics
+-Intrusion Detection Systems (IDS)
+-Intrusion Prevention Systems (IPS)
+-Security Operations concepts
+
+Data Protection and Trust Services
+Protecting information requires preserving:
+
+-Confidentiality
+-Integrity
+-Availability
+
+Topics explored include:
+-Email encryption
+-File system security
+-Data protection mechanisms
+-Authentication systems
+-Code signing
+-Digital signatures
+-Integrity validation
+-DMARC
+-DKIM
+
+Business Continuity and Disaster Recovery
+One of the most valuable lessons from Security+ was understanding that cybersecurity is also a business discipline.
+Topics explored include:
+Business Impact Analysis (BIA)
+-Recovery Time Objective (RTO)
+-Recovery Point Objective (RPO)
+-Mean Time Between Failures (MTBF)
+-Mean Time To Repair (MTTR)
+-Disaster recovery planning
+-Resilience strategies
+-Continuity planning
+ Key Takeaways
+
+The most significant insights I gained from this learning journey include:
+Security Is About Trust
+Every authentication request, access decision, and encrypted communication is ultimately an exercise in establishing and maintaining trust.Security Is About Risk Maement\\
+Organizaticannot eliminate all risk. Effective cybersecurity focuses on identifying, assessing, mitigating, transferring, and continuously managing risk.
+Security Is a Business Ena
+Strong security programs do not simply protect assets. They help organizations maintain customer trust, ensure regulatory compliance, and continue operating during disruptive events.
+
+Prevention Alone Is Not Enough
+No system is completely immune to attack.
+Modern security strategies must include:
+-PreventionDetection
+- Response
+-Recovery-
+-Continuous 
+-Resilience Matters
+
+A mature security posture is measured not only by its ability to prevent incidents but also by its ability to withstand, contain, recover from, and learn from them.
+
+Continuing Development
+This repository represents a milestone rather than a destination.
+
+Areas I plan to explore further include:
+Security Operations Center (SOC) workflows
+Threat Hunting
+Digital Forensics
+Cloud Security
+SIEM platforms
+Vulnerability Management
+Penetration Testing
+Governance, Risk, and Compliance (GRC
+Security Automation
+Security Engineering
+
+Finally
+
+this idea stood out throughout this journey:
+Cybersecurity is not merely about stopping attackers.
+It is about protecting trust, managing risk, preserving business operations, and ensuring resilience in an increasingly interconnected world.
+
+I countinue to appreciate the depth of the field and the responsibility that comes with securing modern digital systems.
+
+This repository serves as a record of that learning journey and a foundation for future growth.
