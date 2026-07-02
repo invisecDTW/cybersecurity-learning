@@ -1,0 +1,52 @@
+SQL  Injection: Querying the Database Type and Version (MySQL & Microsoft SQL Server)
+Overview
+
+In this PortSwigger Web Security Academy lab, I explored how an attacker can use SQL injection to identify the type and version of the underlying database management system (DBMS).
+
+Rather than immediately extracting sensitive data, the objective of this lab was to fingerprint the target database by retrieving its version information.
+
+Understanding the database platform is an important step during a security assessment because different database systems support different SQL syntax, functions, and exploitation techniques.
+
+bjective
+
+Retrieve the database type and version information from a vulnerable application using SQL injection.  
+
+Skills Practiced
+- SQL Injection
+- Database fingerprinting
+- Database enumeration
+-Crafting SQL injection payloads
+-Identifying MySQL and Microsoft SQL Server version information
+
+Why This Matters
+One of the first objectives after identifying a SQL injection vulnerability is determining the type of database running behind the application.
+Knowing the database version enables an attacker to:
+
+- Identify known vulnerabilities affecting that DBMS version.
+- Craft database-specific SQL injection payloads.
+-Select appropriate exploitation techniques.
+-Better understand the target environment.
+Database fingerprinting provides valuable information that can increase the effectiveness of subsequent attacks if the vulnerability is left unpatched.
+
+Key Takeaways
+- Different database management systems use different syntax for retrieving version information.
+- Successful SQL injection is not limited to extracting application data; it can also reveal information about the underlying infrastructure.
+-Identifying the database platform is often an early step in the exploitation process.
+
+Security Recommendation To reduce the risk of SQL injection attacks:
+ Use parameterized queries (prepared statements) instead of dynamically building SQL queries.
+ Apply the principle of least privilege to database accounts.
+- Avoid exposing database error messages or version information to end users.
+- Validate and sanitize user input.
+- Conduct regular security testing to identify injection vulnerabilities before attackers do.
+
+Platform
+PortSwigger Web Security Academy
+Category
+SQL Injection
+Status
+✅ Lab Completed
+
+
+
+> **Disclaimer:** This lab was completed in an authorized training environment provided by the PortSwigger Web Security Academy for educational purposes. No unauthorized systems were tested.
