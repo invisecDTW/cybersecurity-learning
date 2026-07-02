@@ -3,97 +3,67 @@
 Platform
 PortSwigger Web Security Academy  
 https://portswigger.net/web-security
-
-## Lab Context
+Lab Context
 SQL Injection – UNION Attack (Retrieving Data from Other Tables)
 
----
-
-## Overview
-
+Overview
 While working on this PortSwigger SQL Injection lab, the biggest lesson I learned is that in cybersecurity, understanding syntax alone is not enough.
-
 You must understand:
 - Logic
 - Context
 - How the database interprets every character
  Key Learning Insight
-
 In SQL injection, small differences in syntax can completely change the outcome of an attack.
 
 Consider these two payloads:
-
 ```sql id="a1b2c3"
 ' UNION SELECT 'username', 'password' FROM users--
 ```
-
 and:
-
 ```sql id="d4e5f6"
 ' UNION SELECT username, password FROM users--
 ```
-
 Why They Are Different
-
 At first glance, both payloads look similar, but they behave very differently.
-
 1. First Payload (String Literals)
-
 ```sql id="g7h8i9"
 ' UNION SELECT 'username', 'password' FROM users--
 ```
-
 - `'username'` and `'password'` are treated as **string literals**
 - The database returns fixed text values:
   - "username"
   - "password"
 - No real data is extracted from the database
 
-
 2. Second Payload (Column Names)
-
 ```sql id="j1k2l3"
 ' UNION SELECT username, password FROM users--
-```
-
 - `username` and `password` are treated as **column names**
 - The database returns actual data stored in the `users` table
 - Sensitive information is extracted from the database
 
----
-
 Key Lesson
-
 This small difference taught me an important principle:
-
-> In cybersecurity, precision matters more than complexity.
-
+In cybersecurity, precision matters more than complexity.
 A single change in syntax determines whether:
 - You display static text  
 or  
 - You extract real sensitive data
 
 Security Insight
-
 This lab improved my understanding of how attackers:
-
 - Enumerate database structures
 - Identify valid tables and columns
 - Extract sensitive information from poorly secured applications
-
 It also reinforced why secure coding practices are essential, including:
-
 - Parameterized queries
 - Input validation
 - Least privilege database access
 - Secure query construction
 
 Reflection
-
 This exercise helped me move beyond simply using payloads to understanding how SQL queries are interpreted internally.
-
-It reinforced that penetration testing is not just about execution, but about understanding system behavior, structure, and logic.
+It emphasise that penetration testing is not just about execution, but about understanding system behavior, structure, and logic.
 
 Each lab continues to improve my ability to think like both an attacker and a defender.
 
-#CyberSecurity #SQLInjection #UNIONAttack #WebSecurity #PortSwigger #EthicalHacking #PenetrationTesting #OWASP
