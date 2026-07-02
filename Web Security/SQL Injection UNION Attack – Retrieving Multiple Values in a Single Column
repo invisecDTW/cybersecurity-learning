@@ -11,9 +11,9 @@ At first, this appeared to be a limitation because the target data existed in se
 Technical Concept
 A UNION-based SQL injection attack requires the injected query to match the structure of the original query.
 In this scenario:
-* The application exposed only one visible column.
-* Sensitive information existed across multiple database columns.
-* The challenge was to transform multiple values into a single value that could be displayed by the application.
+- The application exposed only one visible column.
+-Sensitive information existed across multiple database columns.
+- The challenge was to transform multiple values into a single value that could be displayed by the application.
 This was achieved by concatenating values together and separating them with a recognizable delimiter.
 
 Key Learning
@@ -21,9 +21,9 @@ The most important lesson from this lab was understanding that successful exploi
 The database was not being tricked into ignoring its structure.
 
 Instead:
-* Column requirements remained enforced.
-* Data type compatibility remained enforced.
-* Query structure remained enforced.
+-Column requirements remained enforced.
+- Data type compatibility remained enforced.
+- Query structure remained enforced.
 The attack succeeded because the injected query respected those requirements while manipulating how data was presented.
 
 Security Insight
@@ -34,15 +34,15 @@ Even when database rules are functioning correctly, insecure query construction 
 Reflection
 This lab helped me move beyond thinking of SQL injection as a collection of payloads.
 Instead, I began viewing it as an interaction between:
-* Application logic
-* Database structure
-* Query constraints
-* Output rendering
+-Application logic
+- Database structure
+- Query constraints
+- Output rendering
 Understanding these relationships provided a clearer mental model of how UNION-based SQL injection works in practice.
 
 Skills Practiced
-* UNION-based SQL injection
-* Query structure analysis
-* Column compatibility assessment
-* String concatenation techniques
-* Data extraction through constrained output channels
+-UNION-based SQL injection
+- Query structure analysis
+- Column compatibility assessment
+- String concatenation techniques
+- Data extraction through constrained output channels
