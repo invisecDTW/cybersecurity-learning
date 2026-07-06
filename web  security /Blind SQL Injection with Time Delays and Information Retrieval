@@ -1,0 +1,77 @@
+Blind SQL Injection with Time Delays and Information Retrieval
+
+Introduction
+One of the biggest misconceptions about SQL injection is that successful exploitation always returns database errors or sensitive data on the screen.
+This lab challenged that assumption. The application behaved almost identically regardless of the payload I sent. There were no error messages, no SQL output, and no obvious indication that my input was being interpreted by the database.
+The only observable difference was 'time'.
+That single characteristic became the foundation of the entire attack.
+
+Understanding the Challenge
+Blind SQL injection forces you to stop looking for visible responses and instead observe how the application behaves.
+Rather than asking, 'What data did the database return?', the real question becomes:
+-Did the database behave differently because my condition evaluated to TRUE?
+In this lab, a delayed response was the only confirmation available.
+
+My Approach
+I started by verifying whether the vulnerable parameter could influence the SQL query.
+Instead of attempting to retrieve data immediately, I injected a conditional statement designed to pause the database only when a specific condition was satisfied.
+When the application consistently responded several seconds later, it confirmed two important observations:
+My injected SQL was being executed.
+-Response time could be used as a reliable source of information.
+At that point, the application had effectively become a binary communication channel.
+Every request produced one of two outcomes:
+-Delayed response → TRUE
+-Immediate response → FALSE
+
+Although simple in concept, repeating this process methodically allowed hidden data to be reconstructed without ever displaying it directly.
+
+Payload Example
+sql
+';SELECT CASE
+WHEN (SUBSTRING(password,1,1)='a')
+THEN pg_sleep(10)
+ELSE pg_sleep(0)
+END
+FROM users
+WHERE username='administrator'--
+
+Rather than exposing the first character of the password, this payload simply asks the database whether the first character is 'a'.
+If the answer is yes, execution pauses.
+If the answer is no, the application responds normally.
+Repeating this logic for every position and every possible character eventually reveals the complete password.
+
+The technical aspect of this lab wasn't especially difficult.
+The real challenge was maintaining a structured approach throughout the extraction process. Because no information is displayed directly, every conclusion depends on careful observation and consistency. A single incorrect assumption early in the process can affect everything that follows.
+
+Security Impact
+Time-based blind SQL injection demonstrates that suppressing database errors does not eliminate SQL injection risks.
+An attacker may still be able to:
+-Enumerate database objects.
+-Recover usernames and passwords.
+-Extract confidential business information.
+-Compromise privileged accounts.
+-Pivot to further attacks after gaining valid credentials.
+
+The absence of visible output should never be considered evidence that an application is secure.
+
+ Mitigation
+The most effective defenses include:
+
+-Using parameterized queries for every database interaction.
+-Validating and sanitizing user-controlled input.
+-Applying least-privilege permissions to database accounts.
+-Monitoring abnormal response patterns that may indicate automated extraction attempts.
+-Conducting regular security assessments to identify injection flaws before deployment.
+
+Personal Reflection
+
+One thing I appreciate about PortSwigger's SQL Injection path is that each lab removes another layer of feedback. Earlier labs might expose hidden data or database errors.
+This one removes those conveniences completely. its  makes learnin real and expose real situation layer by layer.
+Instead of relying on what the application tells you, you're forced to rely on observation, logical reasoning, and patience.
+That shift in mindset is what made this lab valuable.
+
+Environment
+ Platform: PortSwigger Web Security Academy
+Category: SQL Injection
+Technique: Time-Based Blind SQL Injection
+Database Behaviour: Conditional delays using `pg_sleep()`
