@@ -1,0 +1,68 @@
+SQL Injection with Filter Bypass via XML Encoding
+introduction
+In this PortSwigger Web Security Academy lab, I explored how SQL injection is not limited to URL parameters, form fields, or cookies. The application accepted user input in **XML format**, demonstrating that SQL injection depends on **how user input is processed**, not the format in which it is received.
+The objective of the lab was to identify a SQL injection vulnerability and understand how XML encoding could be used to bypass weak input filters.
+
+Understanding the Concepts
+What is XML?
+XML (eXtensible Markup Language) is a structured format used to store and exchange data between systems.
+For example, instead of sending data like this:
+text
+username=carlos
+password=hello123
+an application may send:
+xml
+<user>
+    <username>carlos</username>
+    <password>hello123</password>
+</user>
+Although the format is different, the information being sent is exactly the same.
+
+Why Can XML Be Vulnerable to SQL Injection?
+XML itself is 'not vulnerable' to SQL injection.
+The vulnerability occurs when an application:
+1. Receives XML from the client.
+2. Extracts the values from the XML document.
+3. Inserts those values directly into a SQL query without proper parameterization.
+The database never receives XML. It only receives the SQL query that the application builds from the extracted values.
+
+therefore the flow looks like this:
+     text
+User Input (XML)
+        ↓
+Application Parses XML
+        ↓
+Extracts User Data
+        ↓
+Builds SQL Query
+        ↓
+Database Executes SQL
+If the extracted data is treated as SQL code instead of plain data, SQL injection becomes possible.
+
+What I Learned About XML Encoding
+One of the most interesting parts of this lab was learning that some security filters rely on detecting specific SQL keywords.
+If a filter only searches for the literal text of a keyword, it may fail to recognize an encoded representation of the same input. After the application decodes the XML, the database receives the intended characters.
+
+Note
+Encoding changes how data is represented, not what it means after it is decoded.
+Because of this, keyword filtering alone is not a reliable defense against SQL injection.
+
+important findings
+- SQL injection is not limited to URL parameters.
+- User input can come from XML, JSON, cookies, headers, form fields, or query parameters.
+- The source of the input is less important than how the application uses it.
+- XML and JSON are simply data formats—they are not vulnerabilities by themselves.
+- The safest defense against SQL injection is the use of **parameterized queries (prepared statements)** rather than keyword-based filtering.
+
+Skills Practiced
+- Identifying SQL injection in XML requests.
+- Understanding how XML data is processed by web applications.
+- Recognizing the limitations of weak keyword-based input filtering.
+- Understanding the importance of secure input handling and parameterized SQL queries.
+
+Reflection
+Previously, I associated SQL injection mainly with URL parameters and HTML forms. After completing this exercise, I now understand that the real question is not where the input comes from, but where it ends up.
+
+Whether the application receives data through a URL, JSON, XML, cookies, or HTTP headers, the risk exists whenever user-controlled input is incorporated into SQL queries without proper parameterization.
+
+That shift in perspective is one of the most valuable lessons I've learned so far in my web security journey.
