@@ -1,0 +1,207 @@
+Cisco Packet Tracer - Connect to a Web Server
+
+ Overview
+This lab focused on observing how a client communicates with a web server using IP addressing and how packets travel across a network to reach a destination.
+Although I already had an understanding of how **HTTP communication works**, this lab helped me focus more on the networking processes that happen before application-layer communication can take place.
+
+The lab gave me the opportunity to use a client device to:
+-Test connectivity to a remote web server.
+- Observe ICMP communication using `ping`.
+- Understand the role of ARP in initial communication.
+- Analyze the meaning of TTL values in ICMP responses.
+- Access a web server directly using its IP address.
+
+Lab Environment
+Simulation Tool: Cisco Packet Tracer
+Source Device: PC0
+Destination: Web Server
+Web Server IP Address: `172.33.100.50`
+
+Part 1: Testing Connectivity with Ping
+From the command prompt on PC0, I tested connectivity to the web server using:
+ping 172.33.100.50
+The result look like this 
+
+Pinging 172.33.100.50 with 32 bytes of data:
+
+Reply from 172.33.100.50: bytes=32 time=0ms TTL=127
+Reply from 172.33.100.50: bytes=32 time=0ms TTL=127
+Reply from 172.33.100.50: bytes=32 time=0ms TTL=127
+Reply from 172.33.100.50: bytes=32 time=0ms TTL=127
+
+The ping test confirmed that PC0 could reach the destination web server.
+
+Understanding What Happens During Ping
+When I ran the `ping` command, the PC sent an ICMP Echo Request toward the destination IP address.
+If the destination is reachable, the server responds with an ICMP Echo Reply.
+The basic communication looks like this:
+
+PC0
+  |
+  | ICMP Echo Request
+  ↓
+Web Server
+  |
+  | ICMP Echo Reply
+  ↓
+PC0
+This allows the client to verify whether the destination is reachable and measure the response time.
+
+Understanding ARP
+One important concept reinforced during this lab was ARP (Address Resolution Protocol).
+A device may know the destination's IP address, but communication on a local Ethernet network also requires a MAC address.
+Therefore, before sending an Ethernet frame to a device on the local network, the device may need to discover:
+
+IP Address → MAC Address
+
+For example:
+text
+172.33.100.50 → Destination MAC Address
+
+The device does this by sending an ARP request asking:
+
+"Who has this IP address?"
+The device that owns the IP address responds with its MAC address.
+The PC can then use that information to build and send the Ethernet frame.
+This also helps explain why the first ping may sometimes fail or time out while devices are still performing ARP resolution and preparing their forwarding information.
+
+Understanding TTL
+Another concept I learned more about during this lab was **TTL (Time To Live)**.
+The ping response included:
+TTL=127
+TTL is a value placed in the IP header of a packet. Its main purpose is to prevent packets from circulating endlessly in a network because of routing loops.
+Every time an IP packet passes through a router, its TTL value is reduced by 1.
+For example:
+TTL = 128
+        ↓
+Router 1
+        ↓
+TTL = 127
+        ↓
+Router 2
+        ↓
+TTL = 126
+
+If the TTL reaches zero before the packet reaches its destination, the packet is discarded.
+This prevents a packet caught in a routing loop from continuously travelling around the network forever.
+
+In this lab, the returned value was:
+
+text
+TTL=127
+This indicates that the reply packet had a remaining TTL of 127 when it reached PC0.
+
+In real-world troubleshooting, TTL values can sometimes provide clues about the distance a packet has travelled or the operating system/network stack that generated the response. However, the exact initial TTL value can vary depending on the operating system, so TTL should not be interpreted in isolation.
+
+Understanding Packet Loss
+The ping statistics showed:
+Packets: Sent = 4
+Received = 3
+Lost = 1 (25% loss)
+This means that four ICMP Echo Requests were sent, but only three replies were received.
+In a real network, packet loss could be caused by several factors, including:
+-Network congestion
+-Faulty cables or interfaces
+- Wireless interference
+- Firewall rules
+-Routing problems
+- An unavailable destination
+
+However, in a Packet Tracer simulation, the initial packet loss may occur while devices are still initializing and performing processes such as ARP resolution.
+Therefore, one failed ping does not automatically mean that the network is completely broken. Repeating the test and analyzing the overall result is important.
+
+Part 2: Accessing the Web Server
+After verifying network connectivity, I opened the web browser on PC0 and entered:
+172.33.100.50
+
+The web page successfully loaded.
+This demonstrated that the client could reach the server and access the web service using its IP address.
+The overall process can be simplified as:
+
+text
+PC0
+  ↓
+Destination IP Address
+  ↓
+ARP Resolution (when required)
+  ↓
+Packet Forwarding
+  ↓
+Web Server
+  ↓
+Web Service
+```
+
+Since I already understand the fundamentals of HTTP, the main focus of this lab was not learning what an HTTP request is. Instead, it helped reinforce the networking foundation that allows the client to reach the server in the first place.
+
+Key Concepts Reinforced
+
+1. IP Addressing
+
+The client used the web server's IP address:
+172.33.100.50
+This address identified the destination on the network.
+
+2. ICMP
+The `ping` command used ICMP to test whether the destination was reachable.
+3. ARP
+ARP helps associate an IP address with a MAC address when communication requires delivery over a local Ethernet network.
+. TTL
+TTL prevents packets from circulating indefinitely through routing loops by decreasing as packets pass through routers.
+
+ 5. Packet Loss
+Packet loss occurs when transmitted packets fail to receive a response. The cause must be investigated rather than assuming that every lost packet indicates a serious network failure.
+
+6. Client-to-Server Communication
+The lab demonstrated how a client can reach and communicate with a server using its IP address.
+
+
+What I Learned
+This lab helped connect several networking concepts together.
+Previously, it is easy to look at concepts such as:
+
+IP Address
+ARP
+ICMP
+TTL
+MAC Address
+Web Server
+
+as separate topics.
+However, this lab helped me see how they can work together during a simple client-to-server communication process.
+A simplified view is:
+
+
+Client
+   ↓
+Identifies Destination IP
+   ↓
+Resolves MAC Address Where Necessary
+   ↓
+Sends Packets
+   ↓
+Routers Forward Packets
+   ↓
+TTL Decreases Across Routers
+   ↓
+Destination Server Receives Traffic
+   ↓
+Client Accesses the Web Service
+```
+
+---
+
+# Skills Practiced
+
+- IP addressing
+- ICMP and the `ping` command
+- ARP fundamentals
+-TTL interpretation Understanding packet loss
+- Client-to-server communication
+- Basic network troubleshooting
+- Using Cisco Packet Tracer for network simulation
+Conclusion
+This lab was a useful practical exercise in understanding the networking foundation behind client-to-server communication.
+Although I already had knowledge of HTTP, this exercise allowed me to focus on what happens at the networking level before a client can successfully access a web service.
+It reinforced the importance of understanding how devices identify destinations, resolve addresses, send packets, receive responses, and use mechanisms such as TTL to prevent packets from circulating indefinitely.
+This is another step in my hands-on networking and cybersecurity learning journey.
