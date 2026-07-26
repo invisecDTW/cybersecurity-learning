@@ -1,0 +1,70 @@
+ Cisco Packet Tracer - Configure a Wireless Network
+
+Today, I completed a hands-on Cisco Packet Tracer lab focused on configuring and testing a wireless network.
+
+Lab Objectives
+
+- Connect network devices
+- Configure a wireless router
+- Connect wired and wireless clients
+- Configure and verify network connectivity
+- Test communication between devices on the network
+
+Why This Lab Matters to My Cybersecurity Journey
+One decision I have made in my cybersecurity journey is to prioritize hands-on practice over simply consuming theory.
+It is easy to read about routers, wireless networks, IP addresses, DHCP, and connectivity and feel like you understand them. However, configuring the devices yourself, connecting clients, testing communication, and troubleshooting problems creates a much deeper understanding.
+While I am currently progressing through the SQL Injection learning path in the PortSwigger Web Security Academy, I have also realized that understanding web vulnerabilities alone is not enough.
+Every HTTP request, session cookie, authentication process, and web attack depends on underlying systems communicating across a network.
+Before an application can process an HTTP request, devices need to communicate.
+Before a client can reach a server, network connectivity needs to exist.
+Before I can properly understand how traffic can be intercepted, redirected, monitored, or analyzed, I need to understand how networks actually work.
+That is why I have intentionally incorporated Cisco Packet Tracer networking labs into my learning routine alongside my web security practice.
+
+What I Practiced
+In this lab, I worked with a wireless router and connected both wired and wireless clients to the network.
+
+-Connecting network devices.
+- Configuring a wireless router.
+- Establishing wireless connectivity.
+- Connecting wired clients.
+- Connecting wireless clients.
+- Configuring network settings.
+- Verifying communication between devices.
+- Troubleshooting connectivity when necessary.
+
+The most valuable part of the lab was not simply completing the configuration. It was understanding the relationship between the different components.
+
+A wireless network is not just a device broadcasting a signal.
+
+It involves:
+
+Client Device
+     ↓
+Wireless Connection
+     ↓
+Wireless Router
+     ↓
+Network Configuration
+     ↓
+IP Communication
+     ↓
+Connectivity Verification
+
+
+Each part has to work correctly for the client to communicate successfully.
+Connecting Networking and Web Security
+
+My current learning path is intentionally combining different areas of cybersecurity.
+On one side, I am learning web security through practical SQL Injection labs on PortSwigger.
+On the other side, I am building my networking foundation through Cisco Packet Tracer.
+These areas are not isolated.
+A web application exists on a system.
+That system exists on a network.
+The network carries the traffic.
+The application processes the requests.
+Security vulnerabilities can exist at different layers of this entire communication process.
+The more I understand each layer, the better I can understand how systems work as a whole
+
+I am documenting this journey not because I consider myself an expert, but because I want to track my progress honestly, build a strong foundation, and continuously improve through hands-on practice.
+
+One lab at a time
