@@ -1,0 +1,78 @@
+PortSwigger Lab Write-up: Username Enumeration via Response Timing
+
+Overview
+This lab demonstrates how an application can unintentionally leak information through **response timing** during the authentication process.Although the application returns generic login error messages, subtle differences in how long the server takes to process requests can reveal whether a username exists. The lab also introduces **IP-based brute-force protection**, requiring careful handling of HTTP requests before timing analysis can even begin.
+
+Objective
+-Identify a valid username by observing response timing.
+-Bypass the application's IP-based rate limiting.
+- Discover the correct password.
+- Successfully authenticate as the target user.
+
+Understanding the Vulnerability
+Many developers attempt to prevent username enumeration by displaying the same error message regardless of whether the username or password is incorrect.
+For example: Invalid username or password Although this appears secure because no information is disclosed.
+However, identical messages do not necessarily mean identical processing.
+When an'invalid username' is submitted, the application can often reject the request immediately because no matching account exists.
+When a 'valid username' is submitted, the application usually performs additional work:
+
+-Locate the account
+-Retrieve stored credentials
+-Verify the supplied password
+-Return the authentication result
+Those additional operations take slightly longer.
+Although the difference may only be a few milliseconds, consistent timing differences can reveal which usernames exist.This is known as a **timing side-channel**.
+
+Additional Protection in the Lab
+The application also implements IP-based brute-force protection.
+After several authentication attempts, further requests are blocked.
+This means successful testing requires understanding how the application identifies the client making requests.The timing attack alone is not enough—the request itself must first be accepted by the application.
+
+The Biggest Challenge I Faced
+
+Interestingly, the vulnerability itself was not*\ what slowed me down.
+For several days I repeatedly received:
+Invalid parameter
+At first I assumed I misunderstood the lab.I reviewed my payloads.
+I questioned my methodology.I reread the lab instructions.
+Nothing changed.
+
+Eventually I discovered the real issue.
+While modifying my HTTP request, I had accidentally malformed part of the request structure.Instead of evaluating the login attempt, the application simply rejected the request because it was no longer receiving the expected parameters correctly.
+the lesson was valuable.When a server returns an unexpected error, the problem is not always the exploit.Sometimes the request itself is incorrect.
+That debugging process taught me to carefully inspect every component of an HTTP request before assuming the vulnerability or payload is at fault.
+Key Observations
+
+-Generic error messages alone do not prevent username enumeration.
+-Timing differences can disclose sensitive information without changing application response Side-channel vulnerabilities arise from application behavior rather than visible output.
+- Rate limiting introduces another layer of defense, but researchers must first understand how requests are processed before testing authentication logic.
+- Small mistakes in HTTP request formatting can completely change server behavior and produce misleading errors.
+
+ Security Impact
+
+If attackers can reliably determine valid usernames, password attacks become significantly more effective.
+
+Instead of guessing both usernames and passwords, attackers only need to guess passwords for confirmed accounts.
+Even when authentication messages appear secure, response timing may still disclose valuable information.
+
+Defensive Recommendations
+- Ensure authentication requests take approximately the same amount of time regardless of whether the username exists.\
+- Use constant-time authentication workflows where practical.
+-Return identical responses for all authentication failures.- Implement robust rate limiting and account lockout mechanisms.
+- Carefully validate request handling without exposing unnecessary information through timing or error behavior.
+
+What I Learner
+This lab reinforced an important lesson:
+Security is not only about **what an application says**.
+
+It is also about how it behaves**.
+An attacker does not need explicit confirmation if timing, processing differences, or subtle inconsistencies reveal the same information.Just as importantly, I learned that debugging is a fundamental penetration testing skill.
+The smallest mistake in an HTTP request can prevent meaningful testing entirely, making careful observation just as valuable as technical knowledge.
+
+---
+Platform:PortSwigger Web Security Academy
+Category:Authentication Vulnerabilities
+
+Topic:Username Enumeration via Response Timing
+
+Status ✅ Lab Completed
