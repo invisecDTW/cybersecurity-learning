@@ -1,0 +1,119 @@
+# Broken Brute-Force Protection, IP Block
+
+Platform: PortSwigger Web Security Academy
+Difficulty: Practitioner
+Category: Authentication Vulnerabilities
+verviewThis lab demonstrates that implementing brute-force protection does not automatically make an authentication system securlthough the application attempts to prevent repeated login attempts by blocking requests from the same IP address, a flaw in the implementation allows the protection to be bypassed. Once that logic flaw is understood, password guessing becomes possible again.
+What made this lab particularly interesting was that the challenge was not simply discovering the vulnerability—it was understanding how the application's defense mechanism actually worked and how automated requests interacted with it.
+
+Objective
+Understand the application's brute-force protection.
+Identify the logic flaw protecting the login endpoint.
+Automate password attepts against a known user.
+Successfully authentic
+
+ate to the victim's account.
+
+Understanding the Vulnerability
+Brute-force attacks rely on submitting many authentication attempts until the correct password is found.
+To defend against this, many applications implement rate limiting or temporarily block requests after several failed login attempts.
+In this lab, the application attempted to identify the source of repeated requests and enforce an IP-based block.
+The important lesson is that **security controls are only as strong as the assumptions they make**.
+
+If an application incorrectly trusts information used to identify a client, the protection itself can become ineffective.
+The vulnerability was therefore not in password authentication.
+It was in the application's defensive logic.
+
+My Biggest Challenge
+
+Surprisingly, the vulnerability itself was not the hardest part of this lab.
+
+The biggest challenge was understanding the automation behind the attack.
+
+
+
+
+
+Unlike previous labs where most of the work happened inside Burp Suite, this exercise required interacting with a Python script.
+As someone who has only recently started learning programming, this pushed me outside my comfort zone.
+
+I wasn't trying to become a Python developer overnight.
+
+Instead, I focused on understanding what the script was doing.
+
+Questions I kept asking myself included:
+
+* What is each variable storing?
+* How does the loop move through passwords?
+* How are HTTP requests being generated?
+* Why is the script structured this way instead of manually repeating requests?
+
+Reading the script line by line became just as important as understanding the vulnerability itself.
+At the same time, I was also learning to use Visual Studio Code, which added another layer of learning.
+Something that might take an experienced developer only a few minutes required considerably more time because I was developing two skills simultaneously:
+
+* Understanding Python automation.
+* Becoming comfortable with the development environment used to execute it.
+Looking back, I do not consider that time wasted.
+
+Understanding automation is an important step toward becoming a better security professional.
+Key Observations
+Authentication defenses can fail because of flawed implementation rather than flawed authentication.
+Brute-force protection should never rely on assumptions that attackers can influence.
+
+Automation is an essential part of modern penetration tell
+Reading and understanding existing scripts is often more valuable for beginners than immediately trying to write complex scripts from scratch.
+
+\\\
+Careful analysis of application behavior is usually more important than simply running automated tools.
+
+---
+
+# Security Impact
+
+Weak brute-force protection allows attackers to repeatedly test passwords until valid credentials are discovered.
+
+Even when an application appears to defend against repeated login attempts, implementation mistakes can completely undermine those protections.
+Because authentication protects access to user accounts, weaknesses in brute-force defenses can lead to unauthorized access and account compromise.
+
+---
+
+-Defensive Recommendations
+Implement robust server-side rate limiting.
+Avoid relying on client-controlled information when identifying request sources.
+Combine rate limiting with account lockout policies where appropriate.Monitor authentication attempts for abnormal behavior.
+* Continuously test defensive mechanisms to ensure they cannot be bypassed through logic flaws.
+
+---
+
+What I Learned
+This lab marked an important milestone in my learning journey.
+
+Previous labs primarily focused on understanding HTTP requests and authentication behavior.
+
+This one introduced another skill that is becoming increasingly important in application security:
+
+understanding automation
+I am still early in my programming journey, so my immediate goal is not to write advanced penetration testing scripts from memory.
+My goal is to understand how they work.If I can read a script, follow its logic, understand how it interacts with a web application, and make small modifications when necessary, I know I am building a strong foundation.
+Eventually, writing my own automation will become the next natural step
+
+
+Skills Practiced
+Authentication Testing
+-Brute-Force Logic Analysis
+-HTTP Request Analysis
+-Burp Suite
+-Python Code Reading
+Security Automation FundamentalsVisual Studio Code
+-Application Security
+
+---
+
+**Repository:** Cybersecurity Learning Journey
+
+**Learning Path:** Web Security → Authentication Vulnerabilities
+
+**Lab:** Broken Brute-Force Protection, IP Block
+
+✅ Successfully Completed
