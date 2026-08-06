@@ -1,0 +1,145 @@
+Username Enumeration via Account Lock (Practitioner)
+
+-Platform: PortSwigger Web Security Academy
+-Category: Authentication Vulnerabilities
+-Difficulty: Practitioner
+-Status: ✅ Completed
+
+ Overview
+This lab demonstrates how a security control can unintentionally introduce a vulnerability when its implementation reveals information that should remain hidden.
+The application implements an account lockout mechanism after five consecutive failed login attempts. While the feature is intended to defend against brute-force attacks, it responds differently depending on whether the supplied username exists.
+That difference allows an attacker to enumerate valid usernames before attempting password attacks.
+
+Learning Objective
+The objective of this lab was to:
+-Identify a valid username by observing the application's lockout behavior.
+-Use the discovered username to brute-force the correct password
+-Understand how authentication logic can leak sensitive information through inconsistent responses.
+
+Understanding the Vulnerability
+Account lockout is a common defense against password guessing attacks.
+A secure implementation should behave identically regardless of whether the supplied username exists.
+In this lab, however, the application exposed two different behaviors.
+
+Invalid Usernam
+Every login attempt returned the same generic response.
+Invalid username or password
+No matter how many failed attempts were made, the response never changed.
+
+Valid Username
+The first four failed attempts returned the same generic message.
+On the fifth failed attempt, however, the application responded with:
+You have made too many incorrect attempts.
+Please try again in 1 minute.
+
+Although intended as a security feature, this message unintentionally confirms that the username exists.
+Instead of protecting authentication, the lockout mechanism becomes a username enumeration oracle.
+
+Attack Methodology
+Step 1 — Capture the Login Request
+Using Burp Suite Proxy, I intercepted a normal login request and sent it to Burp Intruder for testing.
+
+Step 2 — Initial Enumeration Attempts
+I initially followed the common Burp Intruder approach.
+I experimented with multiple configurations, including:
+-Cluster Bomb and  Null Payloads
+-Pitchfork and  Null payloads
+Despite these attempts, every request produced identical response lengths, making enumeration impossible.
+
+At this stage, it appeared as though the attack was failing   without realy knowing the real cause
+
+Step 3 — Understanding the Application Logic
+Rather than assuming Burp Suite was malfunctioning, I focused on how the application processed authentication requests.
+The application only revealed the lockout response after five consecutive failed login attempts for the same username.
+My Intruder configuration was not consistently generating those five sequential requests for each username.
+
+This meant the application's lockout condition was never being triggered.
+nderstanding the application's behavior proved more important than relying on a predefined Intruder configuration.
+
+Step 4 — Building a Better Payload
+Instead of forcing Burp Intruder to generate repeated requests, I created a simple Python script to duplicate every username five consecutive times.
+```python
+with open("usernames.txt") as f:
+    for username in f:
+        for _ in range(5):
+            print(username.strip())
+```
+
+The generated payload looked like this:
+```text
+administrator
+administrator
+administrator
+administrator
+administrator
+carlos
+carlos
+carlos
+carlos
+carlos
+```
+
+Using this payload in a simple Sniper attack immediately revealed the valid username.
+
+For one particular account, the fifth request returned the lockout response instead of the generic login error.
+
+Step 5 — Password Enumeration
+After identifying the valid username, the remaining task was straightforward.
+Using the discovered username together with the supplied password list, I identified the correct credentials and completed the lab.
+
+ Why This Works
+
+The vulnerability exists because the application exposes different authentication states.
+Instead of keeping authentication responses indistinguishable, it confirms account existence through its lockout behavior.
+This allows an attacker to separate username discovery from password guessing, making brute-force attacks significantly more efficient.
+
+Security Impact
+If this flaw existed in a real-world application, an attacker could:
+-Enumerate valid user accounts.
+-Reduce the search space for password attacks.
+-Improve the effectiveness of credential stuffing.
+-Increase the likelihood of successful account takeover.
+
+Although the vulnerability does not directly expose passwords, it provides valuable reconnaissance information that can be chained with other attacks.
+
+ Mitigation
+Developers should ensure authentication responses remain consistent regardless of account state.
+Recommended mitigations include:
+-Returning identical responses for valid and invalid usernames.
+-Avoiding lockout messages that reveal account existence.
+-Applying rate limiting based on multiple factors, such as IP address, session, and device fingerprint.
+--Monitoring authentication logs for enumeration attempts.
+-Enforcing Multi-Factor Authentication (MFA) where appropriate.
+
+The goal is to prevent attackers from learning anything about the validity of submitted usernames.
+
+important point ton note
+This lab project several important security concepts.
+-A security feature can become an attack vector when implemented incorrectly.
+-Authentication responses should never disclose account existence.
+-Understanding application logic is often more valuable than relying solely on automated tooling.
+-Effective penetration testing involves understanding *why* an application behaves a certain way—not just identifying *that* it behaves differently.
+
+One of my biggest takeaways from this lab is that successful testing often begins by asking a simple question:
+
+What information is the application revealing that it was never intended to reveal?
+
+Skills Practiced
+
+-Authentication Testing
+-Username Enumeration
+--Burp Suite Proxy
+-Burp Suite Intruder
+-HTTP Request Analysis
+-Python Scripting
+-Brute-force Logic
+-Application Security Testing
+
+Tools Used
+Burp Suite Community Edition
+- Python(VS CODE)
+- PortSwigger Web Security Academy
+
+Lab Status
+
+✅ Successfully Completed
