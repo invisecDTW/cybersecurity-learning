@@ -1,0 +1,153 @@
+2FA Simple Bypass
+Overview
+This lab demonstrates how an application can implement Two-Factor Authentication (2FA) but still fail to properly enforce it.
+The vulnerability is not caused by breaking or guessing the 2FA verification code. Instead, the application contains a flaw in its authentication flow that allows an attacker to access functionality intended to be protected by 2FA without completing the second authentication step.
+
+Platform: PortSwigger Web Security Academy
+Lab: 2FA simple bypass
+Category: Authentication
+Difficulty: Apprentice
+
+Objective
+The objective of this lab was to access the target user's account without knowing their 2FA verification code.
+I was provided with valid credentials consisting of:
+A valid username
+A valid password
+However, I did not have access to the user's 2FA verification code.
+The expected authentication flow was:
+text
+Username + Password
+        ↓
+   2FA Verification
+        ↓
+   Authenticated Area
+```
+
+The vulnerability allowed this flow to be bypassed.
+
+---
+Understanding the Vulnerability
+The important thing I learned from this lab is that **having a 2FA mechanism is not the same as correctly enforcing 2FA**.
+After submitting valid credentials, the application directed the user toward the 2FA verification stage.
+Instead of focusing on obtaining or guessing the verification code, I examined the application's authentication flow and considered an important question:
+
+Does the application actually verify that the second authentication factor has been completed before granting access to protected functionality?
+This shifted the focus from attacking the 2FA code itself to examining how the application controls access after the first authentication step.
+
+Approach
+1. Authenticate with the provided credentials
+I first logged in using the valid username and password provided by the lab.
+The application then presented the 2FA verification step.
+At this point, I did not have the required verification code.
+
+2. Examine the authentication flow
+
+Rather than attempting to guess the 2FA code, I looked at what happened after the username and password were accepted.
+The key question was whether the application had properly established that the user had completed 2FA before allowing access to authenticated functionality.
+This is an important distinction:
+Authentication step exists
+        ≠
+Authentication step is enforced
+
+3. Test access to protected functionality
+I examined the application's requests and navigation flow to determine whether authenticated functionality could be accessed without successfully completing the 2FA stage.
+The application did not sufficiently enforce the second authentication factor across the protected functionality.
+As a result, the 2FA step could be bypassed.
+
+Why the Bypass Worked
+The fundamental issue was an **authentication-flow enforcement failure**.
+The application treated the user as sufficiently authenticated after the initial username and password authentication, even though the 2FA process had not been completed.
+A secure implementation should maintain a clear distinction between:
+Password authentication completed
+            ↓
+      2FA pending
+            ↓
+      2FA completed
+            ↓
+   Fully authenticated session
+```
+The vulnerable implementation effectively allowed the user to reach protected functionality before the final state had been properly established.
+
+Root Cause
+The root cause was improper enforcement of the application's multi-step authentication process.
+The application had a 2FA mechanism, but access control did not adequately depend on successful completion of that mechanism.
+This demonstrates why authentication should not simply be treated as a collection of pages or steps.
+The server must enforce the authentication state on every sensitive request.
+
+Key Lesson
+The biggest lesson from this lab was:
+Security controls are only effective when they are correctly enforced.**
+An application may have:
+
+A login page
+* Password authentication
+* A 2FA page
+* A verification-code mechanism
+and still be vulnerable if the application does not properly enforce the relationship between those steps.
+From an application-security perspective, this means I should not simply ask:
+
+"Does this application have 2FA?"**
+
+I should also ask:
+"Can I reach protected functionality without successfully completing 2FA?"**
+
+Security Impact
+If this type of vulnerability existed in a real application, an attacker who already possessed a user's username and password could potentially bypass the additional protection intended to prevent unauthorized access.
+The impact would depend on what functionality was accessible after the bypass.
+This is particularly important because 2FA is often introduced specifically to protect accounts even when passwords have been compromised.
+If the second authentication factor is not properly enforced, that additional layer of security can become ineffective.
+
+Mitigation
+A secure application should:
+1. Require successful completion of every authentication factor before granting full access.
+2. Maintain a server-side authentication state indicating whether 2FA has been completed.
+3. Prevent access to sensitive functionality while 2FA is still pending.
+4. Enforce authentication requirements on the server rather than relying only on client-side navigation.
+5. Ensure that direct requests to protected endpoints are also subject to the appropriate authentication checks.
+6. Test authentication flows for alternative paths that could allow users to skip security controls.
+
+What I Learned
+This was my first PortSwigger lab focused specifically on 2FA, and it changed how I think about authentication testing.
+Before this lab, it would have been easy to think of 2FA primarily as a verification-code problem.
+The more important lesson is that authentication is a **state and access-control problem**.
+When testing an authentication mechanism, I should consider:
+
+What happens after login?
+What authentication state does the server create?
+        ↓
+Is 2FA actually required?
+        ↓
+What happens if I skip a step?
+        ↓
+Can I directly access protected functionality?
+
+
+The lab reinforced an important application-security principle:
+Never assume a security control works simply because the interface shows that it exists. Test whether the server actually enforces it.**
+Conclusion
+
+The 2FA Simple Bypass lab demonstrated that weaknesses in authentication logic can undermine otherwise useful security controls.
+
+The vulnerability was not about cracking the 2FA code.
+
+It was about understanding the application's authentication flow and identifying that the second authentication factor was not properly enforced before access to protected functionality was granted.
+
+This is my first 2FA-focused PortSwigger lab, and it gives me a foundation for exploring more authentication vulnerabilities and understanding how real-world authentication mechanisms can fail.
+
+Lab completed.**
+
+Skills Practiced
+
+* Authentication testing
+* Two-Factor Authentication analysis
+* Authentication-flow analysis
+* Access-control testing
+* HTTP request analysis
+* Understanding authentication state
+* Web application security testing
+* Burp Suite-assisted testing
+
+## References
+
+* PortSwigger Web Security Academy — Authentication
+* PortSwigger Web Security Academy — 2FA vulnerabilities
